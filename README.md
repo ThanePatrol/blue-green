@@ -18,3 +18,8 @@ If two containers are on the same bridge you can ping them by using the name of 
 
 Using macVlans you can set different IP addresses for each container
 
+# TODO for demo
+1. Two instances of SP Ingress running locally, One blue (8084) one green (8085)
+2. Basic rust service Dockerized that runs a healthcheck every second
+3. When Blue fails healthcheck, we fall back to green - Rust container issues a command
+4. Need to figure out command

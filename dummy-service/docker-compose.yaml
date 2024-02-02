@@ -1,0 +1,32 @@
+version: '3'
+services:
+  blue:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: blue:latest
+    environment:
+      COLOR: "blue"
+    ports:
+      - "8001:3000"
+    networks:
+      - blue-network
+
+  green:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: green:latest
+    environment:
+      COLOR: "green"
+    ports:
+      - "8002:3000"
+    networks:
+      - green-network
+
+networks:
+  blue-network:
+    driver: bridge
+  green-network:
+    driver: bridge
+
