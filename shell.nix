@@ -3,6 +3,7 @@ let
 in
   with nixpkgs;
   stdenv.mkDerivation {
+    allowUnsupportedSystem = true;
     name = "moz_overlay_shell";
     buildInputs = [
       wasm-bindgen-cli
@@ -13,20 +14,11 @@ in
       zlib
       binutils
       lld_9
-      xorg.libX11
-      xorg.libXcursor
-      xorg.libXrandr
-      xorg.libXi
-      libxkbcommon
-      wayland
-      libGL
+      qemu
 
-      xdg-desktop-portal-hyprland
-      libglvnd
     ];
 
   shellHook = ''
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${lib.getLib xorg.libX11}/lib:${lib.getLib xorg.libXcursor}/lib:${lib.getLib xorg.libXrandr}/lib:${lib.getLib xorg.libXi}/lib:${lib.getLib libGL}/lib:${lib.getLib wayland}/lib:${lib.getLib libxkbcommon}/lib
   '';
   }
 

@@ -23,3 +23,17 @@ Using macVlans you can set different IP addresses for each container
 2. Basic rust service Dockerized that runs a healthcheck every second
 3. When Blue fails healthcheck, we fall back to green - Rust container issues a command
 4. Need to figure out command
+
+# QEMU setup
+Download latest ubuntu arm version https://ubuntu.com/download/server
+
+`qemu-img create -f qcow2 ubuntu_arm.qcow2 20G`
+```shell
+   qemu-system-arm -M virt -m 1024 \
+   -cpu cortex-a15 \
+   -bios /usr/local/share/qemu/edk2-aarch64-code.fd \
+   -drive if=none,file=ubuntu_arm.qcow2,format=qcow2,id=hd \
+   -device virtio-blk-device,drive \
+   -kernel ~/Downloads/ubuntu_arm.qcow2
+
+```
