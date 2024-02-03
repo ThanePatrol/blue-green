@@ -37,6 +37,7 @@ impl CurrentDeploy {
 
 //NB - this requires to be run as root for the iptables commands to succeed
 fn main() {
+    println!("Creating docker containers...");
     //start docker containers
     let output = std::process::Command::new("sh")
         .arg("-c")
@@ -44,11 +45,14 @@ fn main() {
         .output()
         .expect("error running docker - is it installed and docker daemon running?");
 
+    println!("Done!");
     let iptables_error_string = "Error running iptables, are you root?";
 
+    println!("Listening blue deploy on port 8000");
     if let Ok(mut current_deploy) = init() {
         let mut buffer = String::new();
 
+        println!("run http://localhost:8000 to see the current deploy");
         // we read from stdin and change listener rules as appropriate
         loop {
             std::io::stdin()
