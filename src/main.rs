@@ -93,14 +93,17 @@ fn switch_ip_tables(
         CurrentDeploy::Blue(_) => *current_deploy = CurrentDeploy::Green(Port::new(8002)),
         CurrentDeploy::Green(_) => *current_deploy = CurrentDeploy::Blue(Port::new(8001)),
     }
-    println!("changed to {requested_change}");
+    println!(
+        "changed to {requested_change} with port {}",
+        current_deploy.get_port()
+    );
 
     //TODO - does this need to be 1 second
     std::thread::sleep(Duration::from_secs(1));
 
     let add_new_rule = format!(
         "iptables -t nat -A OUTPUT -p tcp --dport 8000 -j REDIRECT --to-port {}",
-        current_deploy.get_port()
+        current_deploy.get_port().to_string()
     );
 
     if let Err(_) = std::process::Command::new("sh")
