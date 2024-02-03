@@ -59,7 +59,6 @@ fn main() {
             std::io::stdin()
                 .read_line(&mut buffer)
                 .expect("Error reading from stdin");
-            buffer.trim();
             if buffer.ends_with('\n') {
                 buffer.pop();
             }
@@ -100,14 +99,14 @@ fn switch_ip_tables(
     //TODO - does this need to be 1 second
     std::thread::sleep(Duration::from_secs(1));
 
-    let delete_current_rule = format!(
+    let add_new_rule = format!(
         "iptables -t nat -A OUTPUT -p tcp --dport 8000 -j REDIRECT --to-port {}",
         current_deploy.get_port()
     );
 
     if let Err(_) = std::process::Command::new("sh")
         .arg("-c")
-        .arg(delete_current_rule.as_str())
+        .arg(delete_current_rule)
         .output()
     {
         do yeet std::fmt::Error;
@@ -115,7 +114,7 @@ fn switch_ip_tables(
 
     if let Err(_) = std::process::Command::new("sh")
         .arg("-c")
-        .arg(delete_current_rule.as_str())
+        .arg(add_new_rule.as_str())
         .output()
     {
         do yeet std::fmt::Error;
