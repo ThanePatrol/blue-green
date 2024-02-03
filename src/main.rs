@@ -59,6 +59,9 @@ fn main() {
                 .read_line(&mut buffer)
                 .expect("Error reading from stdin");
             buffer.trim();
+            if buffer.ends_with('\n') {
+                buffer.pop();
+            }
 
             match buffer.as_str() {
                 "green" => {
