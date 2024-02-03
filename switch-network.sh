@@ -3,7 +3,7 @@
 #invoke with the port parameter
 #must been run as root on a linux machine
 #
-# This should be run at least once sysctl -w net.ipv4.ip_forward=1
+# This should be run at least once sysctl -w net.ipv4.ip_forward=1 to allow iptables rules
 #
 # Need OUTPUT for local machine
 iptables -t nat -D OUTPUT -p tcp --dport 8000 -j REDIRECT --to-port $1

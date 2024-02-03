@@ -34,6 +34,6 @@ Download latest ubuntu arm version https://ubuntu.com/download/server
    -bios /usr/local/share/qemu/edk2-aarch64-code.fd \
    -drive if=none,file=ubuntu_arm.qcow2,format=qcow2,id=hd \
    -device virtio-blk-device,drive \
-   -kernel ~/Downloads/ubuntu_arm.qcow2
+   -kernel ~/Downloads/ubuntu_arm.qcow2 
 
 ```
