@@ -66,11 +66,9 @@ fn main() {
             match buffer.as_str() {
                 "green" => {
                     switch_ip_tables(&mut current_deploy, "green").expect(iptables_error_string);
-                    println!("switched to green!");
                 }
                 "blue" => {
                     switch_ip_tables(&mut current_deploy, "blue").expect(iptables_error_string);
-                    println!("switched to blue!");
                 }
                 "exit" => exit(1),
                 _ => println!("You entered {buffer}, Enter one of the following strings: 'blue' 'green' or 'exit'"),
@@ -95,6 +93,7 @@ fn switch_ip_tables(
         CurrentDeploy::Blue(_) => *current_deploy = CurrentDeploy::Green(Port::new(8002)),
         CurrentDeploy::Green(_) => *current_deploy = CurrentDeploy::Blue(Port::new(8001)),
     }
+    println!("changed to {requested_change}");
 
     //TODO - does this need to be 1 second
     std::thread::sleep(Duration::from_secs(1));
