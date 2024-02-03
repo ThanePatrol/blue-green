@@ -1,9 +1,6 @@
 #![feature(yeet_expr)]
 
-use std::{
-    process::{exit, Output},
-    time::Duration,
-};
+use std::{process::exit, time::Duration};
 
 struct Port {
     port_number: u16,
