@@ -58,6 +58,7 @@ fn main() {
             std::io::stdin()
                 .read_line(&mut buffer)
                 .expect("Error reading from stdin");
+            buffer.trim();
 
             match buffer.as_str() {
                 "green" => {
