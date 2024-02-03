@@ -69,6 +69,7 @@ fn main() {
                 "exit" => exit(1),
                 _ => println!("Enter one of the following strings: 'blue' 'green' or 'exit'"),
             }
+            buffer.clear();
         }
     } else {
         panic!("{iptables_error_string}");
