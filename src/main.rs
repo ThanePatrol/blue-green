@@ -91,10 +91,7 @@ fn switch_ip_tables(
     if current_deploy.is_same_color(requested_change) {
         return Ok(());
     }
-    let delete_current_rule = format!(
-        "iptables -t nat -D OUTPUT -p tcp --dport 8000 -j REDIRECT --to-port {}",
-        current_deploy.get_port()
-    );
+    let delete_current_rule = "iptables --flush";
     match current_deploy {
         CurrentDeploy::Blue(_) => *current_deploy = CurrentDeploy::Green(Port::new(8002)),
         CurrentDeploy::Green(_) => *current_deploy = CurrentDeploy::Blue(Port::new(8001)),
