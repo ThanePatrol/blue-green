@@ -53,6 +53,7 @@ fn main() {
         let mut buffer = String::new();
 
         println!("run http://localhost:8000 to see the current deploy");
+        println!("Enter one of the following strings: 'blue' 'green' or 'exit'");
         // we read from stdin and change listener rules as appropriate
         loop {
             std::io::stdin()
@@ -65,10 +66,12 @@ fn main() {
 
             match buffer.as_str() {
                 "green" => {
-                    switch_ip_tables(&mut current_deploy, "green").expect(iptables_error_string)
+                    switch_ip_tables(&mut current_deploy, "green").expect(iptables_error_string);
+                    println!("switched to green!");
                 }
                 "blue" => {
-                    switch_ip_tables(&mut current_deploy, "blue").expect(iptables_error_string)
+                    switch_ip_tables(&mut current_deploy, "blue").expect(iptables_error_string);
+                    println!("switched to blue!");
                 }
                 "exit" => exit(1),
                 _ => println!("You entered {buffer}, Enter one of the following strings: 'blue' 'green' or 'exit'"),
