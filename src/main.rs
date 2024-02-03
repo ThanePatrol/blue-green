@@ -67,7 +67,8 @@ fn main() {
                     switch_ip_tables(&mut current_deploy, "blue").expect(iptables_error_string)
                 }
                 "exit" => exit(1),
-                _ => println!("Enter one of the following strings: 'blue' 'green' or 'exit'"),
+                _ => println!("You entered {buffer}, Enter one of the following strings: 'blue' 'green' or 'exit'"),
+
             }
             buffer.clear();
         }
