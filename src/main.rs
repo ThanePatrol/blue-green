@@ -2,6 +2,9 @@
 
 use std::{process::exit, time::Duration};
 
+const BLUE_PORT: u16 = 8082;
+const GREEN_PORT: u16 = 8012;
+
 struct Port {
     port_number: u16,
 }
@@ -33,7 +36,19 @@ impl CurrentDeploy {
     }
 }
 
-/// This program shows
+//   ports:
+//      - "8080:8080"
+//      - "8081:8081"
+//      - "8082:8082"
+//      - "9000:9999"
+//  ingress-green:
+//    image: service-proxy
+//    container_name: ingress-green
+//    ports:
+//      - "8010:8080"
+//      - "8011:8081"
+//      - "8012:8082"
+//      - "9010:9999"
 
 //NB - this requires to be run as root for the iptables commands to succeed
 fn main() {
@@ -41,7 +56,7 @@ fn main() {
     //start docker containers
     let output = std::process::Command::new("sh")
         .arg("-c")
-        .arg("cd dummy-service && docker-compose up -d")
+        .arg("cd ~/service-proxy && make start-local")
         .output()
         .expect("error running docker - is it installed and docker daemon running?");
 
@@ -52,7 +67,7 @@ fn main() {
     if let Ok(mut current_deploy) = init() {
         let mut buffer = String::new();
 
-        println!("run http://localhost:8000 to see the current deploy");
+        println!("run curl http://localhost:8000 to see the current deploy");
         println!("Enter one of the following strings: 'blue' 'green' or 'exit'");
         // we read from stdin and change listener rules as appropriate
         loop {
@@ -94,8 +109,8 @@ fn switch_ip_tables(
     );
 
     match current_deploy {
-        CurrentDeploy::Blue(_) => *current_deploy = CurrentDeploy::Green(Port::new(8002)),
-        CurrentDeploy::Green(_) => *current_deploy = CurrentDeploy::Blue(Port::new(8001)),
+        CurrentDeploy::Blue(_) => *current_deploy = CurrentDeploy::Green(Port::new(GREEN_PORT)),
+        CurrentDeploy::Green(_) => *current_deploy = CurrentDeploy::Blue(Port::new(BLUE_PORT)),
     }
     println!(
         "changed to {requested_change} with port {}",
@@ -131,7 +146,7 @@ fn switch_ip_tables(
 
 /// We set blue to be live first and keep track of the current deploy with the CurrentDeploy enum
 fn init() -> Result<CurrentDeploy, std::fmt::Error> {
-    let current_deploy = CurrentDeploy::Blue(Port::new(8001));
+    let current_deploy = CurrentDeploy::Blue(Port::new(BLUE_PORT));
     let command_string = format!(
         "iptables -t nat -A OUTPUT -p tcp --dport 8000 -j REDIRECT --to-port {}",
         current_deploy.get_port()
